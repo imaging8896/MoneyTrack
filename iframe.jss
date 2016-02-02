@@ -1,17 +1,17 @@
-//add parameter to iframe src
-function iframeCriteria(iframeId) {
+//pass parameter to iframe by change src
+function deIframe(iframeId) {
 	this.iframe = document.getElementById(iframeId);
 	this.hasParameter = false;
 	this.parameters = '';
 	this.frameSrc = '';
 	
-	var srcStr = '' + this.iframe.src;
-	if(this.iframe.src.search("\\?") === -1) {
-		this.frameSrc = srcStr;
+	var src = this.iframe.src;
+	if(src.search("\\?") === -1) {
+		this.frameSrc = src;
 		this.hasParameter = false;
 	} else {
-		this.frameSrc = srcStr.substr(0, srcStr.search("\\?"));
-		this.parameters = srcStr.substr(srcStr.search("\\?"));
+		this.frameSrc = src.substr(0, src.search("\\?"));
+		this.parameters = src.substr(src.search("\\?"));
 		this.hasParameter = true;
 	}
 	
@@ -19,11 +19,17 @@ function iframeCriteria(iframeId) {
 		if(this.hasParameter) {
 		    this.parameters = this.parameters + '&' + key + '=' + value;
 		} else {
-			this.parameters = '?' + this.parameters + '&' + key + '=' + value;
+			this.parameters = '?' + key + '=' + value;
 			this.hasParameter = true;
 		}
 		
 		this.resetSrc();
+	}
+	
+	this.addParameters = function(keys, values) {
+		for(var i = 0; i < keys.length; i++) {
+			this.addParameter(keys[i], values[i]);
+		}
 	}
 	
 	this.clearParameters = function() {
